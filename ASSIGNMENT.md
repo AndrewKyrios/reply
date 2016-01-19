@@ -3,7 +3,7 @@
 The below questions should be answered (in detail!) regarding your submission.
 
 ##### 1. Reflect on how you "learned" to use the library and write the examples, c.f the "Unfamiliar APIs" reading. What is one aspect of the module's code that made is easy to understand? What is one change that would have made it easier?
-> Answer goes here!
+> For learning the library (step 2 of the HW), I actually took Joel's advice by making a temporary .js file to test out features and making example files. Although the library looks big, by focusing on each function, it allowed me to understand it better. I also used the README.md file to learn more features about the library. One aspect of the module's code that made it easy to understand was ...
 
 
 ##### 2. Consider the process of writing comments that "raise the level of abstraction." What does this mean to you? If you had to explain to a new CS142 student how to write an effective comment, what would you say? #####
