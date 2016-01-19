@@ -1,21 +1,32 @@
-var rl, readline = require('readline');
+/** load the readline module, save it as a variable */
+var rl, readline = require('readline'); 
 
+/** This is a test */
 var get_interface = function(stdin, stdout) {
   if (!rl) rl = readline.createInterface(stdin, stdout);
   else stdin.resume(); // interface exists
   return rl;
 }
 
+/** 
+ * Represents a YES/NO question
+ * @param {string} message - The information shown when requesting the user's input
+ * @param {confirm~requestCallback} callback - The callback that handles the response
+ */
 var confirm = exports.confirm = function(message, callback) {
 
   var question = {
     'reply': {
       type: 'confirm',
       message: message,
-      default: 'yes'
+      
+      default: 'yes' /** If the user does not type in anything and just clicks ENTER */
     }
   }
 
+/** 
+ *@returns invalid value if what the user typed in a command that cannot be accepted
+ */
   get(question, function(err, answer) {
     if (err) return callback(err);
     callback(null, answer.reply === true || answer.reply == 'yes');
@@ -23,23 +34,32 @@ var confirm = exports.confirm = function(message, callback) {
 
 };
 
+/**
+ * @param {object} options - 
+ * @param {confirm~requestCallback} callback - The callback that handles the response
+ * @returns an error message if the the parameter options is not an object
+ */
 var get = exports.get = function(options, callback) {
 
   if (!callback) return; // no point in continuing
 
-  if (typeof options != 'object')
+  if (typeof options != 'object') // passes if option is not an object
     return callback(new Error("Please pass a valid options object."))
 
   var answers = {},
-      stdin = process.stdin,
-      stdout = process.stdout,
+      stdin = process.stdin, //Receiving input
+      stdout = process.stdout, //Delivers output
       fields = Object.keys(options);
 
   var done = function() {
     close_prompt();
     callback(null, answers);
   }
-
+  
+  /**
+   * @returns the program will continue if these is another line to be read
+   * otherwise will close readline
+   */
   var close_prompt = function() {
     stdin.pause();
     if (!rl) return;
@@ -47,6 +67,10 @@ var get = exports.get = function(options, callback) {
     rl = null;
   }
 
+  /**
+   * @param {object} key - the value that was automatically assigned 
+   * @param {object} 
+   */
   var get_default = function(key, partial_answers) {
     if (typeof options[key] == 'object')
       return typeof options[key].default == 'function' ? options[key].default(partial_answers) : options[key].default;
