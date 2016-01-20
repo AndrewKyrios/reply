@@ -1,4 +1,6 @@
+/** This is a test */
 var schedule = {
+    school:'UW',
     course:"",
     instructor:"",
     building:"",

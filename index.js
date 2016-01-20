@@ -1,7 +1,6 @@
 /** load the readline module, save it as a variable */
 var rl, readline = require('readline'); 
 
-/** This is a test */
 var get_interface = function(stdin, stdout) {
   if (!rl) rl = readline.createInterface(stdin, stdout);
   else stdin.resume(); // interface exists
@@ -10,9 +9,12 @@ var get_interface = function(stdin, stdout) {
 
 /** 
  * Represents a YES/NO question
+ * @function
  * @param {string} message - The information shown when requesting the user's input
- * @param {confirm~requestCallback} callback - The callback that handles the response
+ * @param {object} callback - The callback that handles the response
+ * @returns {boolean} - returns yes if answer is true, otherwise returns false
  */
+
 var confirm = exports.confirm = function(message, callback) {
 
   var question = {
@@ -35,8 +37,10 @@ var confirm = exports.confirm = function(message, callback) {
 };
 
 /**
- * @param {object} options - 
- * @param {confirm~requestCallback} callback - The callback that handles the response
+ * Prompts the user with the questions, and will then display the answers 
+ * @function
+ * @param {object} options - questions made in JSON format
+ * @param {object} callback - The callback that handles the response
  * @returns an error message if the the parameter options is not an object
  */
 var get = exports.get = function(options, callback) {
@@ -78,6 +82,11 @@ var get = exports.get = function(options, callback) {
       return options[key];
   }
 
+  /**
+   * Determines the type of response that is expected to be valid
+   * @param {string} reply - the value that came from the input
+   * @param {boolean} - returns true if value is yes, otherwise returns false
+   */
   var guess_type = function(reply) {
 
     if (reply.trim() == '')
@@ -92,6 +101,9 @@ var get = exports.get = function(options, callback) {
     return reply;
   }
 
+/**
+ * Approves response against the given regex
+ */
   var validate = function(key, answer) {
 
     if (typeof answer == 'undefined')
@@ -109,13 +121,16 @@ var get = exports.get = function(options, callback) {
 
   }
 
+/**
+ * Displays message of an improper command line response
+ */
   var show_error = function(key) {
     var str = options[key].error ? options[key].error : 'Invalid value.';
 
     if (options[key].options)
         str += ' (options are ' + options[key].options.join(', ') + ')';
 
-    stdout.write("\033[31m" + str + "\033[0m" + "\n");
+    //stdout.write("\033[31m" + str + "\033[0m" + "\n");
   }
 
   var show_message = function(key) {
@@ -127,9 +142,12 @@ var get = exports.get = function(options, callback) {
     if (options[key].options)
       msg += '(options are ' + options[key].options.join(', ') + ')';
 
-    if (msg != '') stdout.write("\033[1m" + msg + "\033[0m\n");
+    //if (msg != '') stdout.write("\033[1m" + msg + "\033[0m\n");
   }
-
+  
+  /**
+   * Makes passwords fields with "*", with support for backspace keystrokes
+   */
   // taken from commander lib
   var wait_for_password = function(prompt, callback) {
 
@@ -152,7 +170,7 @@ var get = exports.get = function(options, callback) {
         buf = buf.substr(0, buf.length-1);
         var masked = '';
         for (i = 0; i < buf.length; i++) { masked += mask; }
-        stdout.write('\r\033[2K' + prompt + masked);
+        //stdout.write('\r\033[2K' + prompt + masked);
       } else {
         stdout.write(mask);
         buf += c;
@@ -191,6 +209,9 @@ var get = exports.get = function(options, callback) {
     return true;
   }
 
+  /**
+   * Moves onto the succeeding question
+   */
   var next_question = function(index, prev_key, answer) {
     if (prev_key) answers[prev_key] = answer;
 
