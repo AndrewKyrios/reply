@@ -1,4 +1,4 @@
-/** This is a test */
+// This is the example I created for the "get" method
 var schedule = {
     school:'UW',
     course:"",

@@ -1,3 +1,4 @@
+// This is the example I created for the "confirm" method
 var reply = require('./../');
 
 reply.confirm('Do you confirm to continue?', function(err, yes) {
